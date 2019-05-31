@@ -1,0 +1,26 @@
+\title{A Sample Research Paper}
+\author{I.M. Great and So.R. Yu}
+\affiliation{
+Department of Physics and Astronomy,
+University of Pittsburgh,
+Pittsburgh, PA 15260,
+USA.}
+
+\begin{abstract}
+An abstract is a great convenience for the reader and is required by all journals.
+\end{abstract}
+\pacs{PACS numbers go here. These are classification codes for your  research. See {\tt http://publish.aps.org/PACS/} for more info.}
+\maketitle
+
+\section{Introduction}
+
+Using latex is pretty easy if you have a sample document you can follow.
+
+\section{Results}
+Including figures, tables, and equations is easy. Latex also permits easy reference to document elements (figures, tables, sections) with the \begin{verbatim}\ref\end{verbatim} command\ref{fig1}. Citations are made with the \begin{verbatim}\cite\end{verbatim} command\cite{lamport}. 
+
+\begin{figure}[ht]
+\includegraphics[width=7cm,angle=-90]{linear_q_eq_0.ps}
+\caption{You will need to include the package graphicx to be able to make figures like this.}
+\label{fig1}
+\end{figure}
