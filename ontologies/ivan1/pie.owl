@@ -1,0 +1,265 @@
+@prefix : <http://www.co-ode.org/ontologies/pizza/pizza.owl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@base <http://www.co-ode.org/ontologies/pizza> .
+
+<http://www.co-ode.org/ontologies/pizza> rdf:type owl:Ontology ;
+                                          owl:versionIRI <http://www.co-ode.org/ontologies/pizza/2.0.0> ;
+                                          dc:description """An ontology about pizzas and their toppings.
+
+This is an example ontology that contains all constructs required for the various versions of the Pizza Tutorial run by Manchester University (see http://owl.cs.manchester.ac.uk/publications/talks-and-tutorials/protg-owl-tutorial)."""@en ;
+                                          dc:title "pizza"@en ;
+                                          terms:contributor "Alan Rector" ,
+                                                            "Chris Wroe" ,
+                                                            "Matthew Horridge" ,
+                                                            "Nick Drummond" ,
+                                                            "Robert Stevens" ;
+                                          terms:license "Creative Commons Attribution 3.0 (CC BY 3.0)"^^xsd:string ;
+                                          terms:provenance """v2.0 Added new annotations to the ontology using standard/well-know annotation properties
+
+v1.5. Removed protege.owl import and references. Made ontology URI date-independent
+
+v1.4. Added Food class (used in domain/range of hasIngredient), Added several hasCountryOfOrigin restrictions on pizzas, Made hasTopping invers functional"""@en ;
+                                          rdfs:label "pizza"^^xsd:string ;
+                                          owl:versionInfo "2.0"^^xsd:string .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/description
+dc:description rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/title
+dc:title rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/contributor
+terms:contributor rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+terms:license rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/provenance
+terms:provenance rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#altLabel
+skos:altLabel rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#definition
+skos:definition rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#prefLabel
+skos:prefLabel rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.co-ode.org/ontologies/pizza/pizza.owl#hasBase
+pizza:hasBase rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf pizza:hasIngredient ;
+              rdf:type owl:FunctionalProperty ,
+                       owl:InverseFunctionalProperty .
+
+
+###  http://www.co-ode.org/ontologies/pizza/pizza.owl#hasIngredient
+pizza:hasIngredient rdf:type owl:ObjectProperty ,
+                             owl:TransitiveProperty ;
+                    rdfs:comment "NB Transitive - the ingredients of ingredients are ingredients of the whole"@en .
+
+
+###  http://www.co-ode.org/ontologies/pizza/pizza.owl#hasTopping
+pizza:hasTopping rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf pizza:hasIngredient ;
+                 rdf:type owl:InverseFunctionalProperty ;
+                 rdfs:comment "Note that hasTopping is inverse functional because isToppingOf is functional"@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.co-ode.org/ontologies/pizza#CheesePie
+:CheesePie rdf:type owl:Class ;
+           owl:equivalentClass [ owl:intersectionOf ( :Pie
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty pizza:hasTopping ;
+                                                        owl:someValuesFrom :CheeseTopping
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] .
+
+
+###  http://www.co-ode.org/ontologies/pizza#CheeseTopping
+:CheeseTopping rdf:type owl:Class ;
+               rdfs:subClassOf :PieTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#DeepPanBase
+:DeepPanBase rdf:type owl:Class ;
+             rdfs:subClassOf :PieBase ;
+             owl:disjointWith :ThinAndCrispyBase .
+
+
+###  http://www.co-ode.org/ontologies/pizza#HamTopping
+:HamTopping rdf:type owl:Class ;
+            rdfs:subClassOf :MeatTopping ;
+            owl:disjointWith :SalamiTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#MeatTopping
+:MeatTopping rdf:type owl:Class ;
+             rdfs:subClassOf :PieTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#MozarellaPie
+:MozarellaPie rdf:type owl:Class ;
+              rdfs:subClassOf :NamedPie ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty pizza:hasTopping ;
+                                owl:someValuesFrom :MozarellaTopping
+                              ] .
+
+
+###  http://www.co-ode.org/ontologies/pizza#MozarellaTopping
+:MozarellaTopping rdf:type owl:Class ;
+                  rdfs:subClassOf :CheeseTopping ;
+                  owl:disjointWith :ParmezanTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#MushroomTopping
+:MushroomTopping rdf:type owl:Class ;
+                 rdfs:subClassOf :VegetableTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#NamedPie
+:NamedPie rdf:type owl:Class ;
+          rdfs:subClassOf :Pie .
+
+
+###  http://www.co-ode.org/ontologies/pizza#OliveTopping
+:OliveTopping rdf:type owl:Class ;
+              rdfs:subClassOf :VegetableTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#OnionTopping
+:OnionTopping rdf:type owl:Class ;
+              rdfs:subClassOf :VegetableTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#ParmezanTopping
+:ParmezanTopping rdf:type owl:Class ;
+                 rdfs:subClassOf :CheeseTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#Pie
+:Pie rdf:type owl:Class ;
+     owl:disjointWith :PieBase ,
+                      :PieTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#PieBase
+:PieBase rdf:type owl:Class .
+
+
+###  http://www.co-ode.org/ontologies/pizza#PieTopping
+:PieTopping rdf:type owl:Class .
+
+
+###  http://www.co-ode.org/ontologies/pizza#ProbeInconsistentTopping
+:ProbeInconsistentTopping rdf:type owl:Class ;
+                          rdfs:subClassOf :CheeseTopping ,
+                                          :VegetableTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#SalamiTopping
+:SalamiTopping rdf:type owl:Class ;
+               rdfs:subClassOf :MeatTopping .
+
+
+###  http://www.co-ode.org/ontologies/pizza#ThinAndCrispyBase
+:ThinAndCrispyBase rdf:type owl:Class ;
+                   rdfs:subClassOf :PieBase .
+
+
+###  http://www.co-ode.org/ontologies/pizza#VegetableTopping
+:VegetableTopping rdf:type owl:Class ;
+                  rdfs:subClassOf :PieTopping .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.co-ode.org/ontologies/pizza/pizza.owl#America
+pizza:America rdf:type owl:NamedIndividual ,
+                       owl:Thing .
+
+
+###  http://www.co-ode.org/ontologies/pizza/pizza.owl#England
+pizza:England rdf:type owl:NamedIndividual ,
+                       owl:Thing .
+
+
+###  http://www.co-ode.org/ontologies/pizza/pizza.owl#France
+pizza:France rdf:type owl:NamedIndividual ,
+                      owl:Thing .
+
+
+###  http://www.co-ode.org/ontologies/pizza/pizza.owl#Germany
+pizza:Germany rdf:type owl:NamedIndividual ,
+                       owl:Thing .
+
+
+###  http://www.co-ode.org/ontologies/pizza/pizza.owl#Italy
+pizza:Italy rdf:type owl:NamedIndividual ,
+                     owl:Thing .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :CheeseTopping
+                :MeatTopping
+                :VegetableTopping
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :MushroomTopping
+                :OliveTopping
+                :OnionTopping
+              )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( pizza:America
+                        pizza:England
+                        pizza:France
+                        pizza:Germany
+                        pizza:Italy
+                      )
+] .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
